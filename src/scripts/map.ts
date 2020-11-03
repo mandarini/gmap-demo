@@ -2,11 +2,11 @@
 import {} from "google-maps";
 import * as styledMap from "./styledMap";
 import { listenForDrawing } from "./drawing";
-import { placesSearch } from "./placesSearch";
 import { directionCalculator } from "./directions";
 
 import { customGradient } from "./gradient";
 import { mapNumber } from "./mapNumber";
+import { showingElevation } from "./elevationGetter";
 
 let this_map: google.maps.Map;
 let london: google.maps.LatLng;
@@ -32,7 +32,7 @@ export function FunWithMaps(map: google.maps.Map) {
   let darkmap = new google.maps.StyledMapType(
     styledMap.styledMap as google.maps.MapTypeStyle[],
     {
-      name: "Dark Map"
+      name: "Dark Map",
     }
   );
 
@@ -55,13 +55,15 @@ export function FunWithMaps(map: google.maps.Map) {
   map.controls[google.maps.ControlPosition.TOP_CENTER].push(
     document.getElementById("place-search") as HTMLElement
   );
+  // (document.getElementById("place-search") as HTMLElement).style.display =
+  //   "none";
 
   directionCalculator(map);
-  placesSearch(map);
   listenForDrawing(map);
   loadAllMarkers(map);
   loadHeatmapData();
   loadGeoJson(map);
+  showingElevation(map);
 }
 
 function coords(x: number, y: number) {
@@ -71,10 +73,10 @@ function coords(x: number, y: number) {
 function loadAllMarkers(map: google.maps.Map): void {
   let antenna: google.maps.Icon = {
     url: "assets/img/antennabl.png",
-    scaledSize: new google.maps.Size(40, 40)
+    scaledSize: new google.maps.Size(40, 40),
   };
   fetch("assets/data/masts.json")
-    .then(response => {
+    .then((response) => {
       return response.json();
     })
     .then((response_masts: { meta: {}; data: string[][] }) => {
@@ -85,10 +87,10 @@ function loadAllMarkers(map: google.maps.Map): void {
             parseFloat(x[18]),
             parseFloat(x[17])
           ),
-          icon: antenna
+          icon: antenna,
         });
         infoWindow = new google.maps.InfoWindow();
-        marker.addListener("click", e => {
+        marker.addListener("click", (e) => {
           infoWindow.setPosition(e.latLng);
           infoWindow.setContent(`<p>${x[14]}</p>`);
           infoWindow.open(map, marker);
@@ -96,7 +98,7 @@ function loadAllMarkers(map: google.maps.Map): void {
         markers.push(marker);
       });
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error, "Error loading asset");
     });
 }
@@ -120,11 +122,11 @@ export function changeType() {
 }
 export function toggleMasts(): void {
   if (!mastsVisible) {
-    markers.map(marker => {
+    markers.map((marker) => {
       marker.setMap(this_map);
     });
   } else {
-    markers.map(marker => {
+    markers.map((marker) => {
       marker.setMap(null);
     });
   }
@@ -134,7 +136,7 @@ export function toggleMasts(): void {
 export function toggleClusters(): void {
   if (!clustersVisible) {
     markerClusterer = new MarkerClusterer(this_map, markers, {
-      imagePath: "assets/img/m"
+      imagePath: "assets/img/m",
     });
     markerClusterer.setGridSize(10);
   } else {
@@ -160,14 +162,14 @@ export function changeCluster(clust_num: number): void {
     markerClusterer.clearMarkers();
   }
   markerClusterer = new MarkerClusterer(this_map, markers, {
-    imagePath: "assets/img/m"
+    imagePath: "assets/img/m",
   });
   markerClusterer.setGridSize(clust_num);
 }
 
 function loadHeatmapData() {
   fetch("assets/data/letting.json")
-    .then(response => {
+    .then((response) => {
       return response.json();
     })
 
@@ -181,41 +183,41 @@ function loadHeatmapData() {
               parseFloat(x[24]),
               parseFloat(x[23])
             ),
-            weight: parseInt(x[15], 10)
+            weight: parseInt(x[15], 10),
           });
         }
       });
       heatmap = new google.maps.visualization.HeatmapLayer({
-        data: heatmapData
+        data: heatmapData,
       });
       heatmap.set("gradient", customGradient);
       heatmap.set("radius", 40);
       heatmap.set("opacity", 1);
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
     });
 }
 function loadGeoJson(map: google.maps.Map) {
   map.data.loadGeoJson("assets/data/lonely.geojson");
-  map.data.addListener("mouseover", e => {
+  map.data.addListener("mouseover", (e) => {
     showLonely = true;
     prevalence = e.feature.getProperty("PREVALENCE");
   });
-  map.data.addListener("mouseout", e => {
+  map.data.addListener("mouseout", (e) => {
     showLonely = false;
   });
-  map.data.setStyle(feature => {
+  map.data.setStyle((feature) => {
     let lon = feature.getProperty("PREVALENCE");
     let value = 255 - Math.round(mapNumber(lon, 0, 5, 0, 255));
     let color = "rgb(" + value + "," + value + "," + 0 + ")";
     return {
       fillColor: color,
-      strokeWeight: 1
+      strokeWeight: 1,
     };
   });
   infoWindow = new google.maps.InfoWindow();
-  map.data.addListener("click", e => {
+  map.data.addListener("click", (e) => {
     infoWindow.setPosition(e.latLng);
     infoWindow.setContent(`<div class="overlay">
     <p><b>Prevalence factor of Loneliness of those over the age of 65: </b>

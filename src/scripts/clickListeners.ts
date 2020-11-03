@@ -3,11 +3,7 @@ import * as drawingFunctions from "./drawing";
 
 export function loadAllDrawingButtons() {
   drawing_buttons.forEach((btn: { name: string; img: string }) => {
-    createImgButton(
-      btn,
-      drawing as HTMLElement,
-      btn.name === "clear" ? "clear" : "draw"
-    );
+    createImgButton(btn, btn.name === "clear" ? "clear" : "draw");
   });
 }
 
@@ -108,11 +104,7 @@ const drawing_buttons = [
   },
 ];
 
-function createImgButton(
-  btn: { name: string; img: string },
-  parent: HTMLElement,
-  type: string
-) {
+function createImgButton(btn: { name: string; img: string }, type: string) {
   const img_btn = document.createElement("img");
   img_btn.id = `${btn.name}-control`;
   img_btn.tabIndex = 0;
@@ -128,7 +120,8 @@ function createImgButton(
       drawingFunctions.draw(btn.name);
     });
   }
-  if (parent) {
-    parent.appendChild(img_btn);
-  }
+
+  (document.getElementById("drawingControls") as HTMLElement).appendChild(
+    img_btn
+  );
 }

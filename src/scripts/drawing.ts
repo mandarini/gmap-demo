@@ -5,13 +5,14 @@ let drawingLayer: google.maps.Data;
 let allOverlays: any[] = [];
 
 export function listenForDrawing(map: google.maps.Map) {
+  console.log("hello", drawingManager);
   drawingManager = new google.maps.drawing.DrawingManager({
     drawingMode: null,
-    drawingControl: false // i have my custom tools so i don't need the defaults to be displayed
+    drawingControl: false, // i have my custom tools so i don't need the defaults to be displayed
   });
   drawingManager.setMap(map);
   drawingLayer = new google.maps.Data();
-  drawingManager.addListener("overlaycomplete", event => {
+  drawingManager.addListener("overlaycomplete", (event) => {
     allOverlays.push(event.overlay);
     event.overlay.addListener("rightclick", () => {
       event.overlay.setMap(null);
@@ -21,8 +22,8 @@ export function listenForDrawing(map: google.maps.Map) {
         drawingLayer.add(
           new google.maps.Data.Feature({
             geometry: new google.maps.Data.Polygon([
-              event.overlay.getPath().getArray()
-            ])
+              event.overlay.getPath().getArray(),
+            ]),
           })
         );
         /**
@@ -38,8 +39,8 @@ export function listenForDrawing(map: google.maps.Map) {
         map.data.add(
           new google.maps.Data.Feature({
             geometry: new google.maps.Data.Polygon([
-              event.overlay.getPath().getArray()
-            ])
+              event.overlay.getPath().getArray(),
+            ]),
           })
         );
         break;
@@ -49,22 +50,22 @@ export function listenForDrawing(map: google.maps.Map) {
           bounds.getSouthWest(),
           {
             lat: bounds.getSouthWest().lat(),
-            lng: bounds.getNorthEast().lng()
+            lng: bounds.getNorthEast().lng(),
           },
           bounds.getNorthEast(),
           {
             lng: bounds.getSouthWest().lng(),
-            lat: bounds.getNorthEast().lat()
-          }
+            lat: bounds.getNorthEast().lat(),
+          },
         ];
         drawingLayer.add(
           new google.maps.Data.Feature({
-            geometry: new google.maps.Data.Polygon([points])
+            geometry: new google.maps.Data.Polygon([points]),
           })
         );
         map.data.add(
           new google.maps.Data.Feature({
-            geometry: new google.maps.Data.Polygon([points])
+            geometry: new google.maps.Data.Polygon([points]),
           })
         );
         break;
@@ -73,14 +74,14 @@ export function listenForDrawing(map: google.maps.Map) {
           new google.maps.Data.Feature({
             geometry: new google.maps.Data.LineString(
               event.overlay.getPath().getArray()
-            )
+            ),
           })
         );
         map.data.add(
           new google.maps.Data.Feature({
             geometry: new google.maps.Data.LineString(
               event.overlay.getPath().getArray()
-            )
+            ),
           })
         );
         break;
@@ -88,23 +89,23 @@ export function listenForDrawing(map: google.maps.Map) {
         drawingLayer.add(
           new google.maps.Data.Feature({
             properties: {
-              radius: event.overlay.getRadius()
+              radius: event.overlay.getRadius(),
             },
-            geometry: new google.maps.Data.Point(event.overlay.getCenter())
+            geometry: new google.maps.Data.Point(event.overlay.getCenter()),
           })
         );
         map.data.add(
           new google.maps.Data.Feature({
             properties: {
-              radius: event.overlay.getRadius()
-            }
+              radius: event.overlay.getRadius(),
+            },
           })
         );
         break;
       case "marker":
         drawingLayer.add(
           new google.maps.Data.Feature({
-            geometry: new google.maps.Data.Point(event.overlay.getPosition())
+            geometry: new google.maps.Data.Point(event.overlay.getPosition()),
           })
         );
         break;
@@ -120,29 +121,29 @@ export function draw(type: string) {
       drawingManager.setDrawingMode(google.maps.drawing.OverlayType.MARKER);
       let point: google.maps.Icon = {
         url: "assets/img/point.png",
-        scaledSize: new google.maps.Size(30, 30)
+        scaledSize: new google.maps.Size(30, 30),
       };
 
       drawingManager.setOptions({
         markerOptions: {
           icon: point,
           clickable: true,
-          draggable: true
-        }
+          draggable: true,
+        },
       });
       break;
     case "cat":
       drawingManager.setDrawingMode(google.maps.drawing.OverlayType.MARKER);
       let cat: google.maps.Icon = {
         url: "assets/img/cat.png",
-        scaledSize: new google.maps.Size(70, 70)
+        scaledSize: new google.maps.Size(70, 70),
       };
       drawingManager.setOptions({
         markerOptions: {
           icon: cat,
           clickable: true,
-          draggable: true
-        }
+          draggable: true,
+        },
       });
       break;
     case "polygon":
@@ -155,8 +156,8 @@ export function draw(type: string) {
           strokeColor: "#401619",
           clickable: true,
           editable: true,
-          draggable: true
-        }
+          draggable: true,
+        },
       });
       break;
     case "square":
@@ -169,8 +170,8 @@ export function draw(type: string) {
           strokeColor: "#c8a535",
           clickable: true,
           editable: true,
-          draggable: true
-        }
+          draggable: true,
+        },
       });
       break;
     case "polyline":
@@ -181,8 +182,8 @@ export function draw(type: string) {
           strokeColor: "#00b801",
           clickable: true,
           editable: true,
-          draggable: true
-        }
+          draggable: true,
+        },
       });
       break;
     case "circle":
@@ -195,8 +196,8 @@ export function draw(type: string) {
           strokeColor: "#00b801",
           clickable: true,
           editable: true,
-          draggable: true
-        }
+          draggable: true,
+        },
       });
       break;
     case "pan":
@@ -204,7 +205,7 @@ export function draw(type: string) {
       break;
     case "save":
       drawingManager.setDrawingMode(null);
-      drawingLayer.toGeoJson(obj => {
+      drawingLayer.toGeoJson((obj) => {
         console.log(obj);
         download(JSON.stringify(obj), "drawingData.txt");
       });
@@ -223,7 +224,7 @@ function download(content: string, fileName: string) {
 }
 
 export function clearAll() {
-  allOverlays.map(overlay => {
+  allOverlays.map((overlay) => {
     overlay.setMap(null);
   });
   drawingLayer.setMap(null);

@@ -118,7 +118,8 @@ div.codes a:hover {
 }
 .search-places .search {
   display: flex;
-  flex-direction: column;
+  background-color: white;
+  padding: 5px;
 }
 .search-places input {
   padding: 8px;
@@ -137,6 +138,7 @@ div.codes a:hover {
 .search-places .directions .inputs {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
 }
 .search-places .directions .distance {
   background-color: white;

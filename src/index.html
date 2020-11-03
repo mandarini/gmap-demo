@@ -68,10 +68,139 @@
       </div>
       <div id="place-search" class="search-places">
         <div class="search">
-          <input id="place-input" type="text" placeholder="Enter a location" />
+          <!-- <input id="place-input" type="text" placeholder="Enter a location" /> -->
           <div class="strict-select">
             <input type="checkbox" id="use-strict-bounds" value="" />
             <label for="use-strict-bounds">Strict Bounds</label>
+          </div>
+          <div class="radios-directions">
+            <div>
+              <input
+                type="radio"
+                id="BICYCLING"
+                name="directionsMode"
+                value="BICYCLING"
+                checked
+              />
+              <label for="BICYCLING">BICYCLING</label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                id="DRIVING"
+                name="directionsMode"
+                value="DRIVING"
+              />
+              <label for="DRIVING">DRIVING</label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                id="TRANSIT"
+                name="directionsMode"
+                value="TRANSIT"
+              />
+              <label for="TRANSIT">TRANSIT</label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                id="TWO_WHEELER"
+                name="directionsMode"
+                value="TWO_WHEELER"
+              />
+              <label for="TWO_WHEELER">TWO_WHEELER</label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                id="WALKING"
+                name="directionsMode"
+                value="WALKING"
+              />
+              <label for="WALKING">WALKING</label>
+            </div>
+          </div>
+          <div class="units-system">
+            <div>
+              <input
+                type="radio"
+                id="METRIC"
+                name="unitSystem"
+                value="0"
+                checked
+              />
+              <label for="METRIC">METRIC</label>
+            </div>
+            <div>
+              <input type="radio" id="IMPERIAL" name="unitSystem" value="1" />
+              <label for="IMPERIAL">IMPERIAL</label>
+            </div>
+          </div>
+          <div class="transit-modes">
+            <p>Transit mode</p>
+            <div>
+              <input
+                type="radio"
+                id="BUS"
+                name="transitMode"
+                value="BUS"
+                checked
+              />
+              <label for="BUS">BUS</label>
+            </div>
+            <div>
+              <input type="radio" id="RAIL" name="transitMode" value="RAIL" />
+              <label for="RAIL">RAIL</label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                id="SUBWAY"
+                name="transitMode"
+                value="SUBWAY"
+              />
+              <label for="SUBWAY">SUBWAY</label>
+            </div>
+            <div>
+              <input type="radio" id="TRAIN" name="transitMode" value="TRAIN" />
+              <label for="TRAIN">TRAIN</label>
+            </div>
+            <div>
+              <input type="radio" id="TRAM" name="transitMode" value="TRAM" />
+              <label for="TRAM">TRAM</label>
+            </div>
+          </div>
+          <div class="transit-modes">
+            <p>Traffic model</p>
+            <div>
+              <input
+                type="radio"
+                id="BEST_GUESS"
+                name="trafficModel"
+                value="bestguess"
+                checked
+              />
+              <label for="BEST_GUESS">BEST_GUESS</label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                id="OPTIMISTIC"
+                name="trafficModel"
+                value="optimistic"
+              />
+              <label for="OPTIMISTIC">OPTIMISTIC</label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                id="PESSIMISTIC"
+                name="trafficModel"
+                value="pessimistic"
+              />
+              <label for="PESSIMISTIC">PESSIMISTIC</label>
+            </div>
           </div>
         </div>
         <div class="directions">
