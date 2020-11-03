@@ -20,6 +20,7 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlReplaceWebpackPlugin = require("html-replace-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: ["./src/index.ts"],
@@ -68,6 +69,22 @@ module.exports = {
     ]),
     new MiniCssExtractPlugin({
       filename: "style.css",
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: "src/assets",
+          to: "assets",
+        },
+        {
+          from: "manifest.json",
+          to: "manifest.json",
+        },
+        {
+          from: "favicon.ico",
+          to: "favicon.ico",
+        },
+      ],
     }),
   ],
 };

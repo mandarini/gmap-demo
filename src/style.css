@@ -1,13 +1,203 @@
-/* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-#map {
-  height: 100%;
-}
-
-/* Optional: Makes the sample page fill the window. */
 html,
 body {
-  height: 100%;
-  margin: 0;
   padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
+  font-family: "Roboto", "Verdana", sans-serif;
+}
+
+main {
+  padding: 0;
+}
+
+h1 {
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+#map {
+  width: 100vw;
+  height: 100vh;
+}
+
+.map {
+  width: 100vw;
+  height: 100vh;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  padding-left: 8px;
+  padding-top: 8px;
+}
+.controls div {
+  background-color: rgba(255, 255, 255, 0.75);
+  padding: 4px;
+  border-radius: 8px;
+  margin-bottom: 4px;
+  display: flex;
+  flex-direction: column;
+}
+.controls div p {
+  margin: 8px 0;
+  font-size: 1.3em;
+}
+
+.controls div label {
+  margin: 8px 0 0 0;
+  font-size: 1em;
+  font-style: italic;
+}
+
+.controls div.masts button {
+  margin-bottom: 4px;
+}
+
+button {
+  background-color: #625f9c;
+  border: 1px solid #625f9c;
+  border-radius: 3px;
+  text-transform: uppercase;
+  color: white;
+  width: auto;
+  padding: 7px 15px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+input {
+  padding: 8px;
+}
+
+div.codes {
+  text-align: center;
+}
+div.codes a {
+  font-size: 1.3em;
+  padding: 8px;
+  background-color: #625f9c;
+  color: white;
+  border-radius: 16px;
+  text-decoration: none;
+}
+div.codes a:hover {
+  text-decoration: none;
+  background-color: white;
+  color: #625f9c;
+}
+
+.my-link {
+  padding-right: 8px;
+  padding-bottom: 8px;
+}
+.my-link a {
+  font-size: 1.3em;
+  padding: 8px;
+  background-color: #db7093;
+  color: white;
+  border-radius: 16px;
+  text-decoration: none;
+}
+.my-link a:hover {
+  text-decoration: none;
+  background-color: white;
+  color: #db7093;
+}
+
+.search-places {
+  padding-top: 8px;
+  top: 8px;
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+}
+.search-places .search {
+  display: flex;
+  flex-direction: column;
+}
+.search-places input {
+  padding: 8px;
+  line-height: 14px;
+}
+.search-places .strict-select {
+  background-color: white;
+  padding: 8px;
+  color: black;
+}
+.search-places .directions {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+}
+.search-places .directions .inputs {
+  display: flex;
+  flex-direction: row;
+}
+.search-places .directions .distance {
+  background-color: white;
+  padding: 2px;
+  color: black;
+}
+
+#infowindow-content .title {
+  font-weight: bold;
+}
+
+#infowindow-content {
+  display: none;
+}
+
+#map #infowindow-content {
+  display: inline;
+}
+
+.drawing {
+  display: flex;
+  flex-direction: row;
+  padding-right: 8px;
+  padding-top: 8px;
+}
+.drawing img {
+  background-color: #eeebe0;
+  margin: 0 4px 4px 4px;
+  border-radius: 4px;
+  box-shadow: 10px 4px 4px #c5c5c5;
+  padding: 4px;
+  height: 30px;
+  width: auto;
+  cursor: pointer;
+}
+
+p.legend {
+  font-size: 1.3em;
+  background-color: white;
+  margin-left: 8px;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.overlay {
+  max-width: 200px;
+}
+
+@media (max-width: 600px) {
+  .controls {
+    padding-top: 160px;
+  }
+  .search-places {
+    padding-top: 8px;
+    top: 8px;
+  }
+  .search-places .directions {
+    margin-top: 4px;
+  }
+
+  .drawing {
+    flex-direction: column;
+  }
 }
