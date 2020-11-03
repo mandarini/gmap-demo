@@ -225,12 +225,3 @@ function loadGeoJson(map: google.maps.Map) {
     infoWindow.open(map);
   });
 }
-
-function calculate(map: google.maps.Map, point_a: any) {
-  return Math.round(
-    google.maps.geometry.spherical.computeDistanceBetween(
-      point_a,
-      new google.maps.LatLng(38, 23)
-    )
-  );
-}

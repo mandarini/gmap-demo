@@ -17,6 +17,10 @@ export function directionCalculator(map: google.maps.Map) {
   const autocomplete_input_destination: HTMLInputElement = document.getElementById(
     "destination"
   ) as HTMLInputElement;
+
+  let coordinates_origin: google.maps.LatLng;
+  let coordinates_destination: google.maps.LatLng;
+
   const onChangeHandler = () => {
     calculateAndDisplayRoute(
       directionsService,
@@ -27,7 +31,9 @@ export function directionCalculator(map: google.maps.Map) {
       chosenTravelMode,
       chosenUnitSystem,
       chosenTrafficModel,
-      chosenTransit
+      chosenTransit,
+      coordinates_origin,
+      coordinates_destination
     );
   };
 
@@ -56,20 +62,30 @@ export function directionCalculator(map: google.maps.Map) {
 
   autocomplete_origin.addListener("place_changed", () => {
     const place = autocomplete_origin.getPlace();
-    onChangeHandler();
     if (!place.geometry) {
       window.alert("No details available for input: '" + place.name + "'");
       return;
+    } else {
+      coordinates_origin = new google.maps.LatLng(
+        place.geometry.location.lat(),
+        place.geometry.location.lng()
+      );
     }
+    onChangeHandler();
   });
 
   autocomplete_destination.addListener("place_changed", () => {
     const place = autocomplete_destination.getPlace();
-    onChangeHandler();
     if (!place.geometry) {
       window.alert("No details available for input: '" + place.name + "'");
       return;
+    } else {
+      coordinates_destination = new google.maps.LatLng(
+        place.geometry.location.lat(),
+        place.geometry.location.lng()
+      );
     }
+    onChangeHandler();
   });
 
   (document.getElementById(
@@ -110,7 +126,9 @@ export function directionCalculator(map: google.maps.Map) {
           chosenTravelMode,
           chosenUnitSystem,
           chosenTrafficModel,
-          chosenTransit
+          chosenTransit,
+          coordinates_origin,
+          coordinates_destination
         );
       }
     });
@@ -145,7 +163,9 @@ export function directionCalculator(map: google.maps.Map) {
           chosenTravelMode,
           chosenUnitSystem,
           chosenTrafficModel,
-          chosenTransit
+          chosenTransit,
+          coordinates_origin,
+          coordinates_destination
         );
       }
     });
@@ -180,7 +200,9 @@ export function directionCalculator(map: google.maps.Map) {
           chosenTravelMode,
           chosenUnitSystem,
           chosenTrafficModel,
-          chosenTransit
+          chosenTransit,
+          coordinates_origin,
+          coordinates_destination
         );
       }
     });
@@ -215,7 +237,9 @@ export function directionCalculator(map: google.maps.Map) {
           chosenTravelMode,
           chosenUnitSystem,
           chosenTrafficModel,
-          chosenTransit
+          chosenTransit,
+          coordinates_origin,
+          coordinates_destination
         );
       }
     });
@@ -231,7 +255,9 @@ function calculateAndDisplayRoute(
   chosenTravelMode: google.maps.TravelMode,
   chosenUnitSystem: google.maps.UnitSystem,
   chosenTrafficModel: google.maps.TrafficModel,
-  chosenTransit: google.maps.TransitMode
+  chosenTransit: google.maps.TransitMode,
+  coordinates_origin: google.maps.LatLng,
+  coordinates_destination: google.maps.LatLng
 ) {
   if (
     origin.value &&
@@ -273,6 +299,15 @@ function calculateAndDisplayRoute(
                   response.rows[0].elements[0].distance.text +
                   " " +
                   response.rows[0].elements[0].duration.text;
+                if (coordinates_origin && coordinates_destination) {
+                  const geodistance: number = calculateDistance(
+                    coordinates_origin,
+                    coordinates_destination
+                  );
+                  (document.getElementById(
+                    "geodistance"
+                  ) as HTMLSpanElement).textContent = `${geodistance} meters.`;
+                }
               }
             }
           );
@@ -282,4 +317,20 @@ function calculateAndDisplayRoute(
       }
     );
   }
+}
+
+function calculateDistance(
+  point_a: google.maps.LatLng,
+  point_b: google.maps.LatLng
+): number {
+  return Math.round(
+    google.maps.geometry.spherical.computeDistanceBetween(point_a, point_b)
+  );
+}
+
+function calculateMidPoints(
+  point_a: google.maps.LatLng,
+  point_b: google.maps.LatLng
+) {
+  return google.maps.geometry.spherical.interpolate(point_a, point_b, 5);
 }

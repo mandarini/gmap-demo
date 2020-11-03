@@ -84,6 +84,27 @@ export function listenForDrawing(map: google.maps.Map) {
             ),
           })
         );
+        console.log(event.overlay.getPath().getArray());
+        const start: google.maps.LatLng = new google.maps.LatLng(
+          event.overlay.getPath().getArray()[0].lat(),
+          event.overlay.getPath().getArray()[0].lng()
+        );
+        const finish: google.maps.LatLng = new google.maps.LatLng(
+          event.overlay.getPath().getArray()[1].lat(),
+          event.overlay.getPath().getArray()[1].lng()
+        );
+        let marker = new google.maps.Marker({
+          position: calculatePoints(start, finish, 0.25),
+        });
+        marker.setMap(map);
+        marker = new google.maps.Marker({
+          position: calculatePoints(start, finish, 0.5),
+        });
+        marker.setMap(map);
+        marker = new google.maps.Marker({
+          position: calculatePoints(start, finish, 0.75),
+        });
+        marker.setMap(map);
         break;
       case "circle":
         drawingLayer.add(
@@ -230,4 +251,12 @@ export function clearAll() {
   drawingLayer.setMap(null);
   drawingLayer = new google.maps.Data();
   allOverlays = [];
+}
+
+function calculatePoints(
+  point_a: google.maps.LatLng,
+  point_b: google.maps.LatLng,
+  fraction: number
+): google.maps.LatLng {
+  return google.maps.geometry.spherical.interpolate(point_a, point_b, fraction);
 }
