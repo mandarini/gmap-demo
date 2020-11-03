@@ -43,6 +43,19 @@ export function listenForDrawing(map: google.maps.Map) {
             ]),
           })
         );
+
+        let infoWindow = new google.maps.InfoWindow();
+        let marker_area = new google.maps.Marker({
+          position: event.overlay.getPath().getArray()[0],
+        });
+        marker_area.setMap(map);
+        infoWindow.setPosition(event.overlay.getPath().getArray()[0]);
+        infoWindow.setContent(
+          `<p>${Math.round(
+            calculateArea(event.overlay.getPath().getArray())
+          )} square meters</p>`
+        );
+        infoWindow.open(map, marker_area);
         break;
       case "rectangle":
         let bounds = event.overlay.getBounds();
@@ -84,7 +97,6 @@ export function listenForDrawing(map: google.maps.Map) {
             ),
           })
         );
-        console.log(event.overlay.getPath().getArray());
         const start: google.maps.LatLng = new google.maps.LatLng(
           event.overlay.getPath().getArray()[0].lat(),
           event.overlay.getPath().getArray()[0].lng()
@@ -259,4 +271,8 @@ function calculatePoints(
   fraction: number
 ): google.maps.LatLng {
   return google.maps.geometry.spherical.interpolate(point_a, point_b, fraction);
+}
+
+function calculateArea(point: google.maps.MVCArray<google.maps.LatLng>) {
+  return google.maps.geometry.spherical.computeArea(point);
 }
