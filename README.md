@@ -17,6 +17,11 @@ can be replaced by following these instructions to
 [get an api key](https://developers.google.com/maps/documentation/javascript/get-api-key).
 
 ## Feedback
+The demo at the presentation
+https://gmaps-psybercity.web.app/
+
+The presentation slide
+http://bit.ly/kat-casa-map
 
 For feedback related to this sample, please open a new issue on
 [GitHub](https://github.com/googlemaps/js-samples/issues).
